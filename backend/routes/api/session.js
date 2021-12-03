@@ -6,6 +6,15 @@ const { User } = require("../../db/models");
 
 const router = express.Router();
 
+router.get("/", restoreUser, (req, res) => {
+  const { user } = req;
+  if (user) {
+    return res.json({
+      user: user.toSafeObject(),
+    });
+  } else return res.json({});
+});
+
 router.post(
   "/",
   asyncHandler(async (req, res, next) => {
@@ -14,6 +23,7 @@ router.post(
 
     if (!user) {
       const err = new Error("Login failed!");
+      ///oh my god. I got a job
       err.status = 401;
       err.title = "Login failed";
       err.errors = ["The provided credentials were invalid"];
